@@ -1,36 +1,4 @@
----
-layout: page
-permalink: /linear-classify/
----
 
-Table of Contents:
-
-- [Intro to Linear classification](#intro)
-- [Linear score function](#score)
-- [Interpreting a linear classifier](#interpret)
-- [Loss function](#loss)
-  - [Multiclass SVM](#svm)
-  - [Softmax classifier](#softmax)
-  - [SVM vs Softmax](#svmvssoftmax)
-- [Interactive Web Demo of Linear Classification](#webdemo)
-- [Summary](#summary)
-
-<a name='intro'></a>
-
-## Linear Classification
-
-In the last section we introduced the problem of Image Classification, which is the task of assigning a single label to an image from a fixed set of categories. Morever, we described the k-Nearest Neighbor (kNN) classifier which labels images by comparing them to (annotated) images from the training set. As we saw, kNN has a number of disadvantages:
-
-- The classifier must *remember* all of the training data and store it for future comparisons with the test data. This is space inefficient because datasets may easily be gigabytes in size.
-- Classifying a test image is expensive since it requires a comparison to all training images.
-
-**Overview**. We are now going to develop a more powerful approach to image classification that we will eventually naturally extend to entire Neural Networks and Convolutional Neural Networks. The approach will have two major components: a **score function** that maps the raw data to class scores, and a **loss function** that quantifies the agreement between the predicted scores and the ground truth labels. We will then cast this as an optimization problem in which we will minimize the loss function with respect to the parameters of the score function.
-
-<a name='score'></a>
-
-### Parameterized mapping from images to label scores
-
-The first component of this approach is to define the score function that maps the pixel values of an image to confidence scores for each class. We will develop the approach with a concrete example. As before, let's assume a training dataset of images \\( x_i \in R^D \\), each associated with a label \\( y_i \\). Here \\( i = 1 \dots N \\) and \\( y_i \in \{ 1 \dots K \} \\). That is, we have **N** examples (each with a dimensionality **D**) and **K** distinct categories. For example, in CIFAR-10 we have a training set of **N** = 50,000 images, each with **D** = 32 x 32 x 3 = 3072 pixels, and **K** = 10, since there are 10 distinct classes (dog, cat, car, etc). We will now define the score function \\(f: R^D \mapsto R^K\\) that maps the raw image pixels to class scores.
 
 **Linear classifier.** In this module we will start out with arguably the simplest possible function, a linear mapping:
 
